@@ -1,0 +1,4 @@
+community,state,county_fips,median_household_income,median_rent,poverty_rate,total_population,white_pct,black_pct,hispanic_pct,asian_pct,bachelor_degree_pct,unemployment_rate
+Seattle,WA,53033,105391,1832,10.2,749256,65.3,7.1,7.0,16.0,62.4,3.1
+Portland,OR,41051,78439,1412,13.5,652503,72.1,5.9,10.2,8.2,47.8,4.2
+Denver,CO,08031,68592,1356,13.9,715522,68.4,9.7,29.8,4.1,50.3,4.8
