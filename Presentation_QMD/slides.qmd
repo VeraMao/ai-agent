@@ -1,0 +1,452 @@
+---
+title: "Encoding Emotion in Music via Acoustic Features:"
+subtitle: "A Weakly Supervised Machine Learning Study"
+author: "Jiaming Mao"
+format:
+  revealjs:
+    slide-number: true
+    width: 1280
+    height: 720
+    transition: none
+    code-line-numbers: false
+    incremental: false
+    theme: serif
+    fit-text: false
+    mermaid: {}
+adjust-font-size: false
+editor: visual
+bibliography: references.bib
+---
+
+### Context & Motivation {.smaller}
+
+-   Music evokes complex emotional responses via **biological**, **psychological**, and **cultural** mechanisms\
+    \small (Huron; Perlovsky; McCraty et al.)
+
+-   Traditional music emotion recognition relies on small human-annotated datasets, which are costly and inconsistent\
+    \small (Cano & Schuller 2017)
+
+-   Crowdsourced tags (e.g. Last.fm) offer scalable alternatives—but they are noisy, genre-biased, and stylistically ambiguous
+
+-   Prior ML studies focus mostly on performance (accuracy/F1) without explaining *how* models interpret acoustic features\
+    \small (Yang; Yoo; Xia & Xu)
+
+-   Recent advances in **transformer-based NLP** enable context-aware semantic labeling of short music tags\
+    \small (Acheampong et al. 2021; Artemova et al. 2024; Kim et al. 2024)
+
+------------------------------------------------------------------------
+
+### Motivation & Research Gap {.smaller}
+
+-   Most existing models assume single-label emotion per song—yet affect is inherently **multi-label** and ambiguous\
+    \small (Uplabdhee et al. 2023)
+
+-   Acoustic features like **acousticness**, **valence**, and **energy** correlate with emotional expression, but their roles differ by model type\
+    \small (Xu et al.; Kamenetsky et al.)
+
+-   Need for interpretable, weakly-supervised emotion models that:
+
+    -   Accept multi-label input
+    -   Use realistic data pipelines (e.g., Spotify + Last.fm)
+    -   Provide **feature-level explanations** for predictions
+
+------------------------------------------------------------------------
+
+### Key Question
+
+> *How do different machine learning models use acoustic features to classify musical emotions, and what does this reveal about the structure of musical affect?*
+
+\bigskip
+
+**This study:** - Builds a multilabel dataset from 82,950 songs using transformer-labeled Last.fm tags\
+- Compares Random Forest, Logistic Regression, MLP, and KNN\
+- Uses SHAP and permutation importance for interpretation
+
+------------------------------------------------------------------------
+
+### Data Sources & Labeling Pipeline {.smaller}
+
+-   **Raw Tag Data**:
+    -   `tags.db`: 522,366 Last.fm user tags (from Million Song Dataset)\
+    -   `track_metadata.db`: title, artist, and track IDs
+-   **Emotion Labeling**:
+    -   Used a fine-tuned **DistilRoBERTa** transformer to classify tags into 6 emotions\
+    -   Filtered by confidence \> 0.8 and excluded neutral tags
+
+\medskip
+
+**Example Tag → Emotion Mapping**:
+
+| Tag         | Predicted Emotion |
+|-------------|-------------------|
+| happy       | joy               |
+| melancholy  | sadness           |
+| ragecore    | anger             |
+| trippy jazz | surprise          |
+
+-   Result: 297,730 track-emotion pairs → mapped to Spotify tracks
+
+------------------------------------------------------------------------
+
+### Data Matching & Feature Extraction {.smaller}
+
+-   **Track Matching**:
+    -   Queried `track_metadata.db` to match emotion-tagged track IDs to title + artist
+    -   Matched against Spotify API (via `spotipy`) → Spotify ID
+-   **Audio Features**:
+    -   Merged with Kaggle’s **8M Spotify Tracks** dataset\
+    -   Retained 12 Spotify features:
+        -   e.g., acousticness, energy, valence, danceability, speechiness...
+-   **Final Dataset**:
+    -   82,950 matched tracks\
+    -   Multi-label format (each track may have ≥1 emotion)
+
+\medskip
+
+-   **Deduplicated view**:
+    -   39,635 unique tracks used for model training and evaluation
+
+------------------------------------------------------------------------
+
+### Data Pipeline Overview {.smaller}
+
+```{mermaid}
+graph TD
+  A[Last.fm Tags] --> B[Transformer Classifier]
+  B --> C[Emotion Labels with <br> Confidence higher than 0.8]
+  D[Million Song Dataset] --> E[Track Metadata with <br> Track Title & Artist]
+  E --> F[Track Matching]
+  G[Spotify API] --> H[Audio Features from <br> Kaggle Dataset]
+  C --> I[Merged Records]
+  F --> I
+  H --> I
+  I --> J[Final Dataset]
+```
+
+### Data Pipeline Overview Cont. {.smaller}
+
+This project integrates data from **Last.fm**, **Million Song Dataset**, and **Spotify API** to construct a multilabel emotion classification dataset.
+
+-   **Step 1: Emotion Labeling**\
+    Last.fm user tags were processed using a **DistilRoBERTa classifier** fine-tuned for emotion recognition.\
+    Only tags with a predicted emotion confidence above **0.8** were retained.\
+    Result: \~297,000 emotion-tagged track references.
+
+-   **Step 2: Metadata Matching**\
+    Using `track_metadata.db`, each tag-linked track ID was matched to its **title and artist** information.\
+    Matching was done in **batches via SQL** to avoid overload.
+
+-   **Step 3: Audio Feature Extraction**\
+    Each song was matched to its **Spotify Track ID** using the **Spotify API**, and features were retrieved from Kaggle’s 8M track dataset.
+
+-   **Step 4: Merging**\
+    Emotion labels, track metadata, and audio features were merged into a **single dataset**.\
+    Final dataset contains **82,950 songs** with one or more emotion labels and **12 Spotify-derived audio features**.
+
+------------------------------------------------------------------------
+
+### Model Training & Evaluation {.smaller}
+
+-   **Models Compared**:
+    -   Logistic Regression; K-Nearest Neighbors (KNN); Random Forest; Multi-Layer Perceptron (MLP)
+-   **Multilabel Strategy**:
+    -   Dynamic Top-K Matching\
+        Each song is labeled with *k* true emotions → predict top *k* most probable labels\
+        ⟶ Reflects non-exclusive nature of musical affect
+-   **Evaluation Metrics**:
+    -   **Micro-F1 Score**: balances precision and recall across all labels
+    -   **Exact Match Accuracy**: how often *all* predicted labels match exactly
+    -   **Hamming Loss**: proportion of incorrectly predicted labels
+-   **Interpretability Tools**:
+    -   **Permutation Importance**: measures feature contribution by shuffling
+    -   **SHAP (KernelExplainer)**: fine-grained explanations for MLP outputs
+
+------------------------------------------------------------------------
+
+### Model Performance Comparison {.smaller}
+
+![](images/F1%20Score%20Comparison.png){width="90%"}
+
+-   **Random Forest** achieved the highest overall performance\
+    → Micro-F1 Score = **0.6766**, Exact Match Accuracy = **36.67%**
+
+-   **Logistic Regression** performed competitively but struggled with nonlinear interactions
+
+-   **KNN** underperformed significantly\
+    → Poor generalization, especially on low-frequency emotion labels
+
+-   **MLP** captured some nonlinear interactions but was less stable than RF
+
+> Joy and Sadness were predicted most accurately; emotions like Fear and Disgust had much lower recall.
+
+------------------------------------------------------------------------
+
+### Per-Class Metrics & Confusion Patterns {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+![](images/Per-Class%20Scores.png)
+:::
+
+::: {.column width="50%"}
+![](images/True%20to%20Wrongly%20Predicted.png)
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### Per-Class Insights {.smaller}
+
+-   **High F1** for common emotions:
+    -   Joy: well captured via energy, valence
+    -   Sadness: acousticness and low valence
+-   **Low F1 / Recall** for:
+    -   Fear and Disgust → underpredicted or misclassified
+    -   Surprise → overlaps with Joy or Anger
+-   **Key confusion patterns**:
+    -   Sadness ↔ Joy
+    -   Fear → Joy or Sadness
+    -   Disgust → Anger or Surprise
+
+> These patterns reveal **semantic overlap** and **feature ambiguity**, especially for minority emotions.
+
+------------------------------------------------------------------------
+
+### Emotion Co-occurrence & Prediction Misses {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+![](images/Emotion%20Co-occurence.png)
+:::
+
+::: {.column width="50%"}
+![](images/Emotion%20Co%20vs%20Missed%20Prediction%20Rate.png)
+:::
+:::::
+
+### Co-occurrence & Model Limitations {.smaller}
+
+-   Certain emotion pairs frequently co-occur:
+
+    -   Joy + Sadness\
+    -   Anger + Disgust\
+    -   Surprise + Fear
+
+-   **Higher co-occurrence → Higher prediction error**\
+    → When emotions appear together in training data, models struggle to isolate them in predictions
+
+-   **Affective ambiguity** is a core limitation:
+
+    -   Co-occurring emotions dilute the dominant acoustic cues
+    -   Results in model confusion or partial predictions
+
+> Highlights the need for **probabilistic** or **fuzzy multilabel outputs** to better reflect emotional overlap in music.
+
+------------------------------------------------------------------------
+
+### Global Feature Importance
+
+::::: columns
+::: {.column width="60%"}
+![](images/Global%20Feature%20Importance%20Comparison.png)
+:::
+
+::: {.column width="40%"}
+-   RF: acousticness, loudness, energy\
+-   KNN: valence, danceability, mode\
+-   MLP: more balanced use of nonlinear combinations
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### Interpreting Feature Use by Model {.smaller}
+
+-   **Random Forest (RF)**\
+    Prefers **acousticness**, **loudness**, and **energy** — features with sharp thresholds\
+    → Matches axis-aligned splits in tree-based methods
+
+-   **K-Nearest Neighbors (KNN)**\
+    Relies more on **valence**, **danceability**, and **mode**\
+    → Suggests proximity in tonal and rhythmic space matters most for similarity
+
+-   **Multi-Layer Perceptron (MLP)**\
+    Distributes attention across features\
+    → Captures **nonlinear interactions** (e.g. acousticness + speechiness)
+
+-   **Consistent Observations**:\
+    Features like **key**, **mode**, and **time signature** are consistently low in importance
+
+> These insights suggest that models differ not just in performance, but in how they interpret emotion-inducing acoustic cues.
+
+------------------------------------------------------------------------
+
+### SHAP Summary: All Emotions {.smaller}
+
+![](images/mlp_shap_summary_all.png)
+
+-   Each dot = one song instance; horizontal axis = feature contribution
+
+-   Colors = feature value (e.g. high speechiness → red)
+
+-   **Joy**: driven by speechiness, energy, and valence\
+
+-   **Sadness**: dominated by acousticness and low loudness\
+
+-   **Disgust**: often driven by liveness and instrumentalness
+
+> SHAP values expose how MLP assigns different acoustic profiles to each emotion.
+
+### SHAP Detail: Joy {.smaller}
+
+::::: columns
+::: {.column width="55%"}
+![](images/shap_missed_labels/joy_missed_shap_waterfall.png)
+:::
+
+::: {.column width="45%"}
+-   Joy is strongly influenced by:
+    -   **High speechiness**
+    -   **High energy**
+    -   **High valence**
+-   Songs with upbeat lyrics and rhythmic clarity contribute most to this class
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### SHAP Detail: Sadness {.smaller}
+
+::::: columns
+::: {.column width="55%"}
+![](images/shap_missed_labels/sadness_missed_shap_waterfall.png){width="100%"}
+:::
+
+::: {.column width="45%"}
+-   Sadness is primarily driven by:
+    -   **High acousticness**
+    -   **Low energy and loudness**
+    -   **Low valence**
+-   Reflects soft, slow, emotionally muted acoustic profiles
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### SHAP Summary Takeaways {.smaller}
+
+-   **Dominant Cues**:
+    -   Joy ↔ speechiness + energy\
+    -   Sadness ↔ acousticness + low loudness\
+    -   Disgust ↔ liveness + instrumentalness
+-   **Emotion separation via acoustic contrast**:
+    -   Joy and Sadness leverage opposing dynamics
+    -   Anger and Disgust rely on irregularity and texture
+-   **MLP detects nonlinear interactions**, which tree-based models miss
+
+> SHAP enables interpretable insight into model logic — revealing how different features encode emotional tones.
+
+------------------------------------------------------------------------
+
+### Ablation Study: Feature Importance Validation {.smaller}
+
+![](images/Ablation%20Study.png)
+
+-   Removing top 5 most important features causes a **26% drop** in model accuracy\
+
+-   Removing lowest-ranked features (e.g. key, mode) has **little to no impact**
+
+-   Confirms findings from SHAP and permutation importance:
+
+    -   **Energy, acousticness, loudness** are indispensable
+    -   Features like **key** and **time signature** carry minimal emotional signal
+
+> Feature selection has a measurable impact on multilabel emotion classification.
+
+------------------------------------------------------------------------
+
+### Error Analysis Insights {.smaller}
+
+-   **SHAP visualizations** reveal common error types:
+    -   Weak, ambiguous acoustic signals
+    -   Overlapping feature profiles (e.g., Joy ↔ Sadness)
+    -   Genre-encoded affective signals not captured in audio features alone
+-   **Failure Modes** (based on Acheampong et al. 2021):
+    -   🔄 **Semantic Overlap**: Joy vs. Sadness in ballads
+    -   🥁 **Rhythmic Ambiguity**: Anger misread as energy
+    -   🌀 **No Dominant Cue**: Fear often lacks acoustic markers
+    -   🎷 **Cultural Variance**: Surprise in jazz or swing not tied to tempo
+-   Example:
+    -   *“All of Me”* (Billie Holiday) labeled Joy, Sadness, Anger → predicted only Joy\
+    -   Reflects emotional **blending**, not necessarily model failure
+
+> Many errors are **plausible misclassifications** rather than true failures.
+
+------------------------------------------------------------------------
+
+### Discussion Highlights {.smaller}
+
+-   **Acoustic features matter differently across models**\
+    → Tree-based models rely on thresholded cues\
+    → Neural models (MLP) leverage combinations of features
+
+-   **Emotion misclassification is often semantically plausible**\
+    → Joy vs. Sadness confusion in acoustic ballads\
+    → Surprise, Fear misinterpreted due to lack of dominant cues
+
+-   **Label ambiguity limits performance ceiling**\
+    → Last.fm tags are genre-biased and not curated for emotion\
+    → Co-occurrence patterns challenge Top-K multilabel evaluation
+
+-   **Interpretability tools (SHAP, permutation importance)**\
+    → Offer rich insights, but sensitive to collinearity and sampling
+
+> Overall, predictions often reflect **emotional plausibility**, even when not exactly correct.
+
+------------------------------------------------------------------------
+
+### Limitations {.smaller}
+
+-   **Weakly supervised labels**:
+    -   No human-coded emotion ground truth
+    -   Transformer predictions based on tag semantics, not listener response
+-   **Emotion labels are discrete**:
+    -   True affect is continuous and often co-occurring
+    -   Top-K cutoff may omit valid low-confidence labels
+-   **Feature scope limited**:
+    -   Only 12 acoustic features used; No lyrics, harmony, or temporal progression considered
+-   **Cultural & genre bias**:
+    -   Labels skewed toward Western pop (E.g., “acousticness” may imply Sadness in folk, but Joy in swing)
+-   **Interpretability constraints**:
+    -   SHAP values reflect local approximations, not full logic
+    -   Feature collinearity can distort importance rankings
+
+------------------------------------------------------------------------
+
+### Future Directions {.smaller}
+
+-   **Human-Annotated Benchmarking**\
+    → Validate transformer-labeled tags against listener ratings or expert labels\
+    → Helps quantify semantic vs. perceptual accuracy
+
+-   **Richer Feature Inputs**\
+    → Add lyrics, chord progression, and structural timing\
+    → Capture narrative and harmonic emotional signals
+
+-   **Fuzzy Labeling & Probabilistic Models**\
+    → Replace Top-K with thresholding or probability distributions\
+    → Better handles emotional ambiguity and co-occurrence
+
+-   **Advanced Interpretability Techniques**\
+    → Use DeepSHAP or attention visualization in neural models\
+    → Explore emotion-specific subnetworks
+
+-   **Cross-Cultural Generalization**\
+    → Expand dataset beyond Western genres\
+    → Study variation in emotion encoding across musical traditions
+
+------------------------------------------------------------------------
+
+# Thank You
+
+\[Questions?\]

@@ -1,0 +1,71 @@
+Raw Datasets for Emotion Classification in Music
+--------------------------------------------------------
+
+This project uses several large-scale, publicly available datasets to construct a weakly labeled music emotion classification corpus. Due to their size, these raw data files are not hosted directly in this repository, but can be downloaded independently from the original sources listed below.
+
+----------------------------------------------------------------------
+1. Spotify Audio Features Dataset
+----------------------------------------------------------------------
+
+Source: Kaggle  
+URL: https://www.kaggle.com/datasets/maltegrosse/8-m-spotify-tracks-genre-audio-features  
+
+Description:  
+Contains acoustic and genre features for over 8 million Spotify tracks. Each row includes a unique Spotify track ID along with 13 audio features provided by the Spotify Web API, such as:
+- acousticness
+- danceability
+- energy
+- instrumentalness
+- liveness
+- loudness
+- speechiness
+- valence
+- tempo
+- key
+- mode
+- time_signature
+- duration_ms
+
+Usage:  
+This dataset is used as the primary source of acoustic features in the emotion classification pipeline. Tracks are matched via their Spotify IDs.
+
+----------------------------------------------------------------------
+2. Last.fm Tags Dataset
+----------------------------------------------------------------------
+
+Source: The Echo Nest / Columbia University  
+URL: http://millionsongdataset.com/lastfm/  
+
+Description:  
+Provides user-contributed tags associated with songs in the Million Song Dataset. These tags include genre, mood, instrumentation, and stylistic terms.
+
+The two key files used are:
+
+(a) **tags.db**  
+Direct link: http://labrosa.ee.columbia.edu/~dpwe/tmp/lastfm_tags.db  
+SQLite database with normalized tags per track (track ID + tag + frequency).  
+Used for generating weak emotion labels using a transformer-based text classifier.
+
+(b) **metadata.db (lastfm_subset.zip)**  
+Direct link: http://millionsongdataset.com/sites/default/files/lastfm/lastfm_subset.zip  
+Includes track-level metadata such as track names, artist names, and MusicBrainz IDs.  
+Used to retrieve track titles and artists for human-readable output and metadata enrichment.
+
+----------------------------------------------------------------------
+
+How to Use:
+-----------
+
+1. Download the above files from their respective links.
+2. Unzip `lastfm_subset.zip` to extract `track_metadata.db` and place it alongside `lastfm_tags.db`.
+3. Store the Kaggle dataset locally and extract relevant features via `spotify_id`.
+4. Use our preprocessing scripts to:
+   - Match Last.fm track IDs with Spotify metadata
+   - Apply emotion classification to tags
+   - Merge all sources into a unified training set
+
+NOTE:
+Due to dataset licensing, redistribution of raw files is not permitted. Please download them manually.
+
+For more details on how these datasets were processed, see the `Data and Methods` section of the main paper and the associated Jupyter notebooks in the repository.
+

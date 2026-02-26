@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="slides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="slides_files/libs/quarto-html/tabby.min.js"></script>
+<script src="slides_files/libs/quarto-html/popper.min.js"></script>
+<script src="slides_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="slides_files/libs/quarto-html/quarto-syntax-highlighting-e7f5f70a9e27d410b7ae2c681a3d6791.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.30">
+
+  <meta name="author" content="Jiaming Mao">
+  <title>Encoding Emotion in Music via Acoustic Features:</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-816793a8a4a837d14f6ea458e2f1c5cb.css">
+  <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <meta name="mermaid-theme" content="neutral">
+  <script src="slides_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="slides_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="slides_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Encoding Emotion in Music via Acoustic Features:</h1>
+  <p class="subtitle">A Weakly Supervised Machine Learning Study</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Jiaming Mao 
+</div>
+</div>
+</div>
+
+</section>
+<section id="context-motivation" class="slide level2 smaller">
+<h2>Context &amp; Motivation</h2>
+<ul>
+<li><p>Music evokes complex emotional responses via <strong>biological</strong>, <strong>psychological</strong>, and <strong>cultural</strong> mechanisms<br>
+(Huron; Perlovsky; McCraty et al.)</p></li>
+<li><p>Traditional music emotion recognition relies on small human-annotated datasets, which are costly and inconsistent<br>
+(Cano &amp; Schuller 2017)</p></li>
+<li><p>Crowdsourced tags (e.g.&nbsp;Last.fm) offer scalable alternatives—but they are noisy, genre-biased, and stylistically ambiguous</p></li>
+<li><p>Prior ML studies focus mostly on performance (accuracy/F1) without explaining <em>how</em> models interpret acoustic features<br>
+(Yang; Yoo; Xia &amp; Xu)</p></li>
+<li><p>Recent advances in <strong>transformer-based NLP</strong> enable context-aware semantic labeling of short music tags<br>
+(Acheampong et al.&nbsp;2021; Artemova et al.&nbsp;2024; Kim et al.&nbsp;2024)</p></li>
+</ul>
+</section>
+<section id="motivation-research-gap" class="slide level2 smaller">
+<h2>Motivation &amp; Research Gap</h2>
+<ul>
+<li><p>Most existing models assume single-label emotion per song—yet affect is inherently <strong>multi-label</strong> and ambiguous<br>
+(Uplabdhee et al.&nbsp;2023)</p></li>
+<li><p>Acoustic features like <strong>acousticness</strong>, <strong>valence</strong>, and <strong>energy</strong> correlate with emotional expression, but their roles differ by model type<br>
+(Xu et al.; Kamenetsky et al.)</p></li>
+<li><p>Need for interpretable, weakly-supervised emotion models that:</p>
+<ul>
+<li>Accept multi-label input</li>
+<li>Use realistic data pipelines (e.g., Spotify + Last.fm)</li>
+<li>Provide <strong>feature-level explanations</strong> for predictions</li>
+</ul></li>
+</ul>
+</section>
+<section id="key-question" class="slide level2">
+<h2>Key Question</h2>
+<blockquote>
+<p><em>How do different machine learning models use acoustic features to classify musical emotions, and what does this reveal about the structure of musical affect?</em></p>
+</blockquote>
+<p><strong>This study:</strong> - Builds a multilabel dataset from 82,950 songs using transformer-labeled Last.fm tags<br>
+- Compares Random Forest, Logistic Regression, MLP, and KNN<br>
+- Uses SHAP and permutation importance for interpretation</p>
+</section>
+<section id="data-sources-labeling-pipeline" class="slide level2 smaller">
+<h2>Data Sources &amp; Labeling Pipeline</h2>
+<ul>
+<li><strong>Raw Tag Data</strong>:
+<ul>
+<li><code>tags.db</code>: 522,366 Last.fm user tags (from Million Song Dataset)<br>
+</li>
+<li><code>track_metadata.db</code>: title, artist, and track IDs</li>
+</ul></li>
+<li><strong>Emotion Labeling</strong>:
+<ul>
+<li>Used a fine-tuned <strong>DistilRoBERTa</strong> transformer to classify tags into 6 emotions<br>
+</li>
+<li>Filtered by confidence &gt; 0.8 and excluded neutral tags</li>
+</ul></li>
+</ul>
+<p><strong>Example Tag → Emotion Mapping</strong>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Tag</th>
+<th>Predicted Emotion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>happy</td>
+<td>joy</td>
+</tr>
+<tr class="even">
+<td>melancholy</td>
+<td>sadness</td>
+</tr>
+<tr class="odd">
+<td>ragecore</td>
+<td>anger</td>
+</tr>
+<tr class="even">
+<td>trippy jazz</td>
+<td>surprise</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Result: 297,730 track-emotion pairs → mapped to Spotify tracks</li>
+</ul>
+</section>
+<section id="data-matching-feature-extraction" class="slide level2 smaller">
+<h2>Data Matching &amp; Feature Extraction</h2>
+<ul>
+<li><strong>Track Matching</strong>:
+<ul>
+<li>Queried <code>track_metadata.db</code> to match emotion-tagged track IDs to title + artist</li>
+<li>Matched against Spotify API (via <code>spotipy</code>) → Spotify ID</li>
+</ul></li>
+<li><strong>Audio Features</strong>:
+<ul>
+<li>Merged with Kaggle’s <strong>8M Spotify Tracks</strong> dataset<br>
+</li>
+<li>Retained 12 Spotify features:
+<ul>
+<li>e.g., acousticness, energy, valence, danceability, speechiness…</li>
+</ul></li>
+</ul></li>
+<li><strong>Final Dataset</strong>:
+<ul>
+<li>82,950 matched tracks<br>
+</li>
+<li>Multi-label format (each track may have ≥1 emotion)</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Deduplicated view</strong>:
+<ul>
+<li>39,635 unique tracks used for model training and evaluation</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-pipeline-overview" class="slide level2 smaller">
+<h2>Data Pipeline Overview</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+  A[Last.fm Tags] --&gt; B[Transformer Classifier]
+  B --&gt; C[Emotion Labels with &lt;br&gt; Confidence higher than 0.8]
+  D[Million Song Dataset] --&gt; E[Track Metadata with &lt;br&gt; Track Title &amp; Artist]
+  E --&gt; F[Track Matching]
+  G[Spotify API] --&gt; H[Audio Features from &lt;br&gt; Kaggle Dataset]
+  C --&gt; I[Merged Records]
+  F --&gt; I
+  H --&gt; I
+  I --&gt; J[Final Dataset]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="data-pipeline-overview-cont." class="slide level2 smaller">
+<h2>Data Pipeline Overview Cont.</h2>
+<p>This project integrates data from <strong>Last.fm</strong>, <strong>Million Song Dataset</strong>, and <strong>Spotify API</strong> to construct a multilabel emotion classification dataset.</p>
+<ul>
+<li><p><strong>Step 1: Emotion Labeling</strong><br>
+Last.fm user tags were processed using a <strong>DistilRoBERTa classifier</strong> fine-tuned for emotion recognition.<br>
+Only tags with a predicted emotion confidence above <strong>0.8</strong> were retained.<br>
+Result: ~297,000 emotion-tagged track references.</p></li>
+<li><p><strong>Step 2: Metadata Matching</strong><br>
+Using <code>track_metadata.db</code>, each tag-linked track ID was matched to its <strong>title and artist</strong> information.<br>
+Matching was done in <strong>batches via SQL</strong> to avoid overload.</p></li>
+<li><p><strong>Step 3: Audio Feature Extraction</strong><br>
+Each song was matched to its <strong>Spotify Track ID</strong> using the <strong>Spotify API</strong>, and features were retrieved from Kaggle’s 8M track dataset.</p></li>
+<li><p><strong>Step 4: Merging</strong><br>
+Emotion labels, track metadata, and audio features were merged into a <strong>single dataset</strong>.<br>
+Final dataset contains <strong>82,950 songs</strong> with one or more emotion labels and <strong>12 Spotify-derived audio features</strong>.</p></li>
+</ul>
+</section>
+<section id="model-training-evaluation" class="slide level2 smaller">
+<h2>Model Training &amp; Evaluation</h2>
+<ul>
+<li><strong>Models Compared</strong>:
+<ul>
+<li>Logistic Regression; K-Nearest Neighbors (KNN); Random Forest; Multi-Layer Perceptron (MLP)</li>
+</ul></li>
+<li><strong>Multilabel Strategy</strong>:
+<ul>
+<li>Dynamic Top-K Matching<br>
+Each song is labeled with <em>k</em> true emotions → predict top <em>k</em> most probable labels<br>
+⟶ Reflects non-exclusive nature of musical affect</li>
+</ul></li>
+<li><strong>Evaluation Metrics</strong>:
+<ul>
+<li><strong>Micro-F1 Score</strong>: balances precision and recall across all labels</li>
+<li><strong>Exact Match Accuracy</strong>: how often <em>all</em> predicted labels match exactly</li>
+<li><strong>Hamming Loss</strong>: proportion of incorrectly predicted labels</li>
+</ul></li>
+<li><strong>Interpretability Tools</strong>:
+<ul>
+<li><strong>Permutation Importance</strong>: measures feature contribution by shuffling</li>
+<li><strong>SHAP (KernelExplainer)</strong>: fine-grained explanations for MLP outputs</li>
+</ul></li>
+</ul>
+</section>
+<section id="model-performance-comparison" class="slide level2 smaller">
+<h2>Model Performance Comparison</h2>
+
+<img data-src="images/F1%20Score%20Comparison.png" style="width:90.0%" class="r-stretch"><ul>
+<li><p><strong>Random Forest</strong> achieved the highest overall performance<br>
+→ Micro-F1 Score = <strong>0.6766</strong>, Exact Match Accuracy = <strong>36.67%</strong></p></li>
+<li><p><strong>Logistic Regression</strong> performed competitively but struggled with nonlinear interactions</p></li>
+<li><p><strong>KNN</strong> underperformed significantly<br>
+→ Poor generalization, especially on low-frequency emotion labels</p></li>
+<li><p><strong>MLP</strong> captured some nonlinear interactions but was less stable than RF</p></li>
+</ul>
+<blockquote>
+<p>Joy and Sadness were predicted most accurately; emotions like Fear and Disgust had much lower recall.</p>
+</blockquote>
+</section>
+<section id="per-class-metrics-confusion-patterns" class="slide level2 smaller">
+<h2>Per-Class Metrics &amp; Confusion Patterns</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/Per-Class%20Scores.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/True%20to%20Wrongly%20Predicted.png"></p>
+</div></div>
+</section>
+<section id="per-class-insights" class="slide level2 smaller">
+<h2>Per-Class Insights</h2>
+<ul>
+<li><strong>High F1</strong> for common emotions:
+<ul>
+<li>Joy: well captured via energy, valence</li>
+<li>Sadness: acousticness and low valence</li>
+</ul></li>
+<li><strong>Low F1 / Recall</strong> for:
+<ul>
+<li>Fear and Disgust → underpredicted or misclassified</li>
+<li>Surprise → overlaps with Joy or Anger</li>
+</ul></li>
+<li><strong>Key confusion patterns</strong>:
+<ul>
+<li>Sadness ↔︎ Joy</li>
+<li>Fear → Joy or Sadness</li>
+<li>Disgust → Anger or Surprise</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>These patterns reveal <strong>semantic overlap</strong> and <strong>feature ambiguity</strong>, especially for minority emotions.</p>
+</blockquote>
+</section>
+<section id="emotion-co-occurrence-prediction-misses" class="slide level2 smaller">
+<h2>Emotion Co-occurrence &amp; Prediction Misses</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/Emotion%20Co-occurence.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/Emotion%20Co%20vs%20Missed%20Prediction%20Rate.png"></p>
+</div></div>
+</section>
+<section id="co-occurrence-model-limitations" class="slide level2 smaller">
+<h2>Co-occurrence &amp; Model Limitations</h2>
+<ul>
+<li><p>Certain emotion pairs frequently co-occur:</p>
+<ul>
+<li>Joy + Sadness<br>
+</li>
+<li>Anger + Disgust<br>
+</li>
+<li>Surprise + Fear</li>
+</ul></li>
+<li><p><strong>Higher co-occurrence → Higher prediction error</strong><br>
+→ When emotions appear together in training data, models struggle to isolate them in predictions</p></li>
+<li><p><strong>Affective ambiguity</strong> is a core limitation:</p>
+<ul>
+<li>Co-occurring emotions dilute the dominant acoustic cues</li>
+<li>Results in model confusion or partial predictions</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Highlights the need for <strong>probabilistic</strong> or <strong>fuzzy multilabel outputs</strong> to better reflect emotional overlap in music.</p>
+</blockquote>
+</section>
+<section id="global-feature-importance" class="slide level2">
+<h2>Global Feature Importance</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="images/Global%20Feature%20Importance%20Comparison.png"></p>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>RF: acousticness, loudness, energy<br>
+</li>
+<li>KNN: valence, danceability, mode<br>
+</li>
+<li>MLP: more balanced use of nonlinear combinations</li>
+</ul>
+</div></div>
+</section>
+<section id="interpreting-feature-use-by-model" class="slide level2 smaller">
+<h2>Interpreting Feature Use by Model</h2>
+<ul>
+<li><p><strong>Random Forest (RF)</strong><br>
+Prefers <strong>acousticness</strong>, <strong>loudness</strong>, and <strong>energy</strong> — features with sharp thresholds<br>
+→ Matches axis-aligned splits in tree-based methods</p></li>
+<li><p><strong>K-Nearest Neighbors (KNN)</strong><br>
+Relies more on <strong>valence</strong>, <strong>danceability</strong>, and <strong>mode</strong><br>
+→ Suggests proximity in tonal and rhythmic space matters most for similarity</p></li>
+<li><p><strong>Multi-Layer Perceptron (MLP)</strong><br>
+Distributes attention across features<br>
+→ Captures <strong>nonlinear interactions</strong> (e.g.&nbsp;acousticness + speechiness)</p></li>
+<li><p><strong>Consistent Observations</strong>:<br>
+Features like <strong>key</strong>, <strong>mode</strong>, and <strong>time signature</strong> are consistently low in importance</p></li>
+</ul>
+<blockquote>
+<p>These insights suggest that models differ not just in performance, but in how they interpret emotion-inducing acoustic cues.</p>
+</blockquote>
+</section>
+<section id="shap-summary-all-emotions" class="slide level2 smaller">
+<h2>SHAP Summary: All Emotions</h2>
+
+<img data-src="images/mlp_shap_summary_all.png" class="r-stretch"><ul>
+<li><p>Each dot = one song instance; horizontal axis = feature contribution</p></li>
+<li><p>Colors = feature value (e.g.&nbsp;high speechiness → red)</p></li>
+<li><p><strong>Joy</strong>: driven by speechiness, energy, and valence<br>
+</p></li>
+<li><p><strong>Sadness</strong>: dominated by acousticness and low loudness<br>
+</p></li>
+<li><p><strong>Disgust</strong>: often driven by liveness and instrumentalness</p></li>
+</ul>
+<blockquote>
+<p>SHAP values expose how MLP assigns different acoustic profiles to each emotion.</p>
+</blockquote>
+</section>
+<section id="shap-detail-joy" class="slide level2 smaller">
+<h2>SHAP Detail: Joy</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><img data-src="images/shap_missed_labels/joy_missed_shap_waterfall.png"></p>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>Joy is strongly influenced by:
+<ul>
+<li><strong>High speechiness</strong></li>
+<li><strong>High energy</strong></li>
+<li><strong>High valence</strong></li>
+</ul></li>
+<li>Songs with upbeat lyrics and rhythmic clarity contribute most to this class</li>
+</ul>
+</div></div>
+</section>
+<section id="shap-detail-sadness" class="slide level2 smaller">
+<h2>SHAP Detail: Sadness</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><img data-src="images/shap_missed_labels/sadness_missed_shap_waterfall.png" style="width:100.0%"></p>
+</div><div class="column" style="width:45%;">
+<ul>
+<li>Sadness is primarily driven by:
+<ul>
+<li><strong>High acousticness</strong></li>
+<li><strong>Low energy and loudness</strong></li>
+<li><strong>Low valence</strong></li>
+</ul></li>
+<li>Reflects soft, slow, emotionally muted acoustic profiles</li>
+</ul>
+</div></div>
+</section>
+<section id="shap-summary-takeaways" class="slide level2 smaller">
+<h2>SHAP Summary Takeaways</h2>
+<ul>
+<li><strong>Dominant Cues</strong>:
+<ul>
+<li>Joy ↔︎ speechiness + energy<br>
+</li>
+<li>Sadness ↔︎ acousticness + low loudness<br>
+</li>
+<li>Disgust ↔︎ liveness + instrumentalness</li>
+</ul></li>
+<li><strong>Emotion separation via acoustic contrast</strong>:
+<ul>
+<li>Joy and Sadness leverage opposing dynamics</li>
+<li>Anger and Disgust rely on irregularity and texture</li>
+</ul></li>
+<li><strong>MLP detects nonlinear interactions</strong>, which tree-based models miss</li>
+</ul>
+<blockquote>
+<p>SHAP enables interpretable insight into model logic — revealing how different features encode emotional tones.</p>
+</blockquote>
+</section>
+<section id="ablation-study-feature-importance-validation" class="slide level2 smaller">
+<h2>Ablation Study: Feature Importance Validation</h2>
+
+<img data-src="images/Ablation%20Study.png" class="r-stretch"><ul>
+<li><p>Removing top 5 most important features causes a <strong>26% drop</strong> in model accuracy<br>
+</p></li>
+<li><p>Removing lowest-ranked features (e.g.&nbsp;key, mode) has <strong>little to no impact</strong></p></li>
+<li><p>Confirms findings from SHAP and permutation importance:</p>
+<ul>
+<li><strong>Energy, acousticness, loudness</strong> are indispensable</li>
+<li>Features like <strong>key</strong> and <strong>time signature</strong> carry minimal emotional signal</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Feature selection has a measurable impact on multilabel emotion classification.</p>
+</blockquote>
+</section>
+<section id="error-analysis-insights" class="slide level2 smaller">
+<h2>Error Analysis Insights</h2>
+<ul>
+<li><strong>SHAP visualizations</strong> reveal common error types:
+<ul>
+<li>Weak, ambiguous acoustic signals</li>
+<li>Overlapping feature profiles (e.g., Joy ↔︎ Sadness)</li>
+<li>Genre-encoded affective signals not captured in audio features alone</li>
+</ul></li>
+<li><strong>Failure Modes</strong> (based on Acheampong et al.&nbsp;2021):
+<ul>
+<li>🔄 <strong>Semantic Overlap</strong>: Joy vs.&nbsp;Sadness in ballads</li>
+<li>🥁 <strong>Rhythmic Ambiguity</strong>: Anger misread as energy</li>
+<li>🌀 <strong>No Dominant Cue</strong>: Fear often lacks acoustic markers</li>
+<li>🎷 <strong>Cultural Variance</strong>: Surprise in jazz or swing not tied to tempo</li>
+</ul></li>
+<li>Example:
+<ul>
+<li><em>“All of Me”</em> (Billie Holiday) labeled Joy, Sadness, Anger → predicted only Joy<br>
+</li>
+<li>Reflects emotional <strong>blending</strong>, not necessarily model failure</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Many errors are <strong>plausible misclassifications</strong> rather than true failures.</p>
+</blockquote>
+</section>
+<section id="discussion-highlights" class="slide level2 smaller">
+<h2>Discussion Highlights</h2>
+<ul>
+<li><p><strong>Acoustic features matter differently across models</strong><br>
+→ Tree-based models rely on thresholded cues<br>
+→ Neural models (MLP) leverage combinations of features</p></li>
+<li><p><strong>Emotion misclassification is often semantically plausible</strong><br>
+→ Joy vs.&nbsp;Sadness confusion in acoustic ballads<br>
+→ Surprise, Fear misinterpreted due to lack of dominant cues</p></li>
+<li><p><strong>Label ambiguity limits performance ceiling</strong><br>
+→ Last.fm tags are genre-biased and not curated for emotion<br>
+→ Co-occurrence patterns challenge Top-K multilabel evaluation</p></li>
+<li><p><strong>Interpretability tools (SHAP, permutation importance)</strong><br>
+→ Offer rich insights, but sensitive to collinearity and sampling</p></li>
+</ul>
+<blockquote>
+<p>Overall, predictions often reflect <strong>emotional plausibility</strong>, even when not exactly correct.</p>
+</blockquote>
+</section>
+<section id="limitations" class="slide level2 smaller">
+<h2>Limitations</h2>
+<ul>
+<li><strong>Weakly supervised labels</strong>:
+<ul>
+<li>No human-coded emotion ground truth</li>
+<li>Transformer predictions based on tag semantics, not listener response</li>
+</ul></li>
+<li><strong>Emotion labels are discrete</strong>:
+<ul>
+<li>True affect is continuous and often co-occurring</li>
+<li>Top-K cutoff may omit valid low-confidence labels</li>
+</ul></li>
+<li><strong>Feature scope limited</strong>:
+<ul>
+<li>Only 12 acoustic features used; No lyrics, harmony, or temporal progression considered</li>
+</ul></li>
+<li><strong>Cultural &amp; genre bias</strong>:
+<ul>
+<li>Labels skewed toward Western pop (E.g., “acousticness” may imply Sadness in folk, but Joy in swing)</li>
+</ul></li>
+<li><strong>Interpretability constraints</strong>:
+<ul>
+<li>SHAP values reflect local approximations, not full logic</li>
+<li>Feature collinearity can distort importance rankings</li>
+</ul></li>
+</ul>
+</section>
+<section id="future-directions" class="slide level2 smaller">
+<h2>Future Directions</h2>
+<ul>
+<li><p><strong>Human-Annotated Benchmarking</strong><br>
+→ Validate transformer-labeled tags against listener ratings or expert labels<br>
+→ Helps quantify semantic vs.&nbsp;perceptual accuracy</p></li>
+<li><p><strong>Richer Feature Inputs</strong><br>
+→ Add lyrics, chord progression, and structural timing<br>
+→ Capture narrative and harmonic emotional signals</p></li>
+<li><p><strong>Fuzzy Labeling &amp; Probabilistic Models</strong><br>
+→ Replace Top-K with thresholding or probability distributions<br>
+→ Better handles emotional ambiguity and co-occurrence</p></li>
+<li><p><strong>Advanced Interpretability Techniques</strong><br>
+→ Use DeepSHAP or attention visualization in neural models<br>
+→ Explore emotion-specific subnetworks</p></li>
+<li><p><strong>Cross-Cultural Generalization</strong><br>
+→ Expand dataset beyond Western genres<br>
+→ Study variation in emotion encoding across musical traditions</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section>
+<section id="thank-you" class="title-slide slide level1 center">
+<h1>Thank You</h1>
+<p>[Questions?]</p>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="slides_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="slides_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="slides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

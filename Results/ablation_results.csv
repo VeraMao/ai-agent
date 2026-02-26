@@ -1,0 +1,13 @@
+Remaining Features,Accuracy,Dropped Features
+12,0.24033807739127425,[]
+11,0.23609745962489712,['valence']
+10,0.23610212110799456,"['valence', 'loudness']"
+9,0.21819070526907414,"['valence', 'loudness', 'instrumentalness']"
+8,0.20688594283157133,"['valence', 'loudness', 'instrumentalness', 'energy']"
+7,0.19038495859271157,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness']"
+6,0.1889725292141805,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness', 'danceability']"
+5,0.19321248105440084,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness', 'danceability', 'speechiness']"
+4,0.17672215163404958,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness', 'danceability', 'speechiness', 'liveness']"
+3,0.22007793999738956,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness', 'danceability', 'speechiness', 'liveness', 'tempo']"
+2,0.23468436432020925,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness', 'danceability', 'speechiness', 'liveness', 'tempo', 'key']"
+1,0.23704041106289808,"['valence', 'loudness', 'instrumentalness', 'energy', 'acousticness', 'danceability', 'speechiness', 'liveness', 'tempo', 'key', 'mode']"
