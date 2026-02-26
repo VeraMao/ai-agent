@@ -1,0 +1,16 @@
+community,headline,source,published_date,sentiment_score
+Seattle,Amazon announces new downtown HQ expansion,Seattle Times,2024-01-10,0.65
+Seattle,Seattle homeless count rises 5% year-over-year,Seattle PI,2024-01-11,-0.48
+Seattle,City approves record affordable housing budget,KUOW,2024-01-12,0.72
+Seattle,Seattle named top tech job market for third year,GeekWire,2024-01-13,0.81
+Seattle,Fentanyl crisis claims 12 lives in one weekend,KOMO News,2024-01-14,-0.89
+Portland,Portland declares state of emergency over fentanyl,OregonLive,2024-01-10,-0.92
+Portland,New MAX line opening boosts transit ridership,Portland Tribune,2024-01-11,0.61
+Portland,Small business closures accelerate in Old Town,Willamette Week,2024-01-12,-0.55
+Portland,Portland food scene earns James Beard nominations,Portland Monthly,2024-01-13,0.78
+Portland,Protest erupts over new homeless campsite policy,KGW,2024-01-14,-0.44
+Denver,Denver economy outpaces national growth,Denver Post,2024-01-10,0.74
+Denver,Colorado ski industry reports record season,Summit Daily,2024-01-11,0.83
+Denver,Denver school district faces budget shortfall,Denver7,2024-01-12,-0.61
+Denver,New light rail extension opens on time and on budget,CPR News,2024-01-13,0.69
+Denver,Surge in property crime reported in Capitol Hill,KDVR,2024-01-14,-0.57
