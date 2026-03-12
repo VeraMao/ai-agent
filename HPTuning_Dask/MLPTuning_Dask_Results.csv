@@ -1,0 +1,13 @@
+Platform,Method,Model,Label,Runtime (s),Best Score,Resources Used,Notes
+Dask,Grid Search,MLP,joy,0.53,0.5521,Dask cluster (default),"{'mlp__hidden_layer_sizes': (100, 50)}"
+Dask,Grid Search,MLP,sadness,0.28,0.5942,Dask cluster (default),"{'mlp__hidden_layer_sizes': (100,)}"
+Dask,Grid Search,MLP,anger,0.32,0.5373,Dask cluster (default),"{'mlp__hidden_layer_sizes': (128, 64, 32)}"
+Dask,Grid Search,MLP,fear,0.23,0.4855,Dask cluster (default),"{'mlp__hidden_layer_sizes': (100,)}"
+Dask,Grid Search,MLP,surprise,0.42,0.5466,Dask cluster (default),"{'mlp__hidden_layer_sizes': (128, 64, 32)}"
+Dask,Grid Search,MLP,disgust,0.21,0.5425,Dask cluster (default),"{'mlp__hidden_layer_sizes': (100,)}"
+Dask,Random Search,MLP,joy,0.56,0.578,Dask cluster (default),"{'clf__learning_rate_init': 0.05, 'clf__hidden_layer_sizes': (32, 16), 'clf__batch_size': 64}"
+Dask,Random Search,MLP,sadness,0.31,0.5892,Dask cluster (default),"{'clf__learning_rate_init': 0.01, 'clf__hidden_layer_sizes': (50, 50), 'clf__batch_size': 128}"
+Dask,Random Search,MLP,anger,0.35,0.5842,Dask cluster (default),"{'clf__learning_rate_init': 0.01, 'clf__hidden_layer_sizes': (50, 50), 'clf__batch_size': 128}"
+Dask,Random Search,MLP,fear,0.35,0.4951,Dask cluster (default),"{'clf__learning_rate_init': 0.05, 'clf__hidden_layer_sizes': (32, 16), 'clf__batch_size': 64}"
+Dask,Random Search,MLP,surprise,0.28,0.5214,Dask cluster (default),"{'clf__learning_rate_init': 0.05, 'clf__hidden_layer_sizes': (128, 64), 'clf__batch_size': 128}"
+Dask,Random Search,MLP,disgust,0.33,0.5995,Dask cluster (default),"{'clf__learning_rate_init': 0.01, 'clf__hidden_layer_sizes': (64,), 'clf__batch_size': 64}"

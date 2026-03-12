@@ -1,0 +1,32 @@
+spark_method_comparison_results EMR m5xlargeX3
+Platform,Method,Model,Label,Runtime (s),Best Score,Resources Used,Notes,Source
+Spark,Grid Search,Random Forest,joy,160.9,0.775,"EMR, m5.xlarge x 3","numTrees=200, maxDepth=5, minInstancesPerNode=1",RF Grid Search
+Spark,Grid Search,Random Forest,sadness,155.77,0.7459,"EMR, m5.xlarge x 3","numTrees=100, maxDepth=5, minInstancesPerNode=2",RF Grid Search
+Spark,Grid Search,Random Forest,anger,153.54,0.7374,"EMR, m5.xlarge x 3","numTrees=100, maxDepth=5, minInstancesPerNode=1",RF Grid Search
+Spark,Grid Search,Random Forest,fear,152.4,0.738,"EMR, m5.xlarge x 3","numTrees=100, maxDepth=5, minInstancesPerNode=1",RF Grid Search
+Spark,Grid Search,Random Forest,surprise,153.16,0.8115,"EMR, m5.xlarge x 3","numTrees=100, maxDepth=5, minInstancesPerNode=1",RF Grid Search
+Spark,Grid Search,Random Forest,disgust,152.89,0.7384,"EMR, m5.xlarge x 3","numTrees=200, maxDepth=5, minInstancesPerNode=2",RF Grid Search
+Spark,Random Search,Random Forest,joy,114.29,0.765,"EMR, m5.xlarge x 3","numTrees=150, maxDepth=5, minInstancesPerNode=2",RF Random Search
+Spark,Random Search,Random Forest,sadness,143.45,0.7415,"EMR, m5.xlarge x 3","numTrees=200, maxDepth=5, minInstancesPerNode=3",RF Random Search
+Spark,Random Search,Random Forest,anger,149.41,0.7311,"EMR, m5.xlarge x 3","numTrees=100, maxDepth=5, minInstancesPerNode=3",RF Random Search
+Spark,Random Search,Random Forest,fear,128.29,0.7298,"EMR, m5.xlarge x 3","numTrees=100, maxDepth=5, minInstancesPerNode=2",RF Random Search
+Spark,Random Search,Random Forest,surprise,119.74,0.813,"EMR, m5.xlarge x 3","numTrees=150, maxDepth=5, minInstancesPerNode=1",RF Random Search
+Spark,Random Search,Random Forest,disgust,160.71,0.9784,"EMR, m5.xlarge x 3","numTrees=150, maxDepth=10, minInstancesPerNode=2",RF Random Search
+Spark,Grid Search,MLP,joy,109.61,0.7385,"EMR, m5.xlarge x 3","layers=[9, 50, 2], maxIter=100",MLP Grid Search
+Spark,Grid Search,MLP,sadness,99.74,0.7381,"EMR, m5.xlarge x 3","layers=[9, 50, 2], maxIter=100",MLP Grid Search
+Spark,Grid Search,MLP,anger,105.89,0.7125,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=100",MLP Grid Search
+Spark,Grid Search,MLP,fear,104.87,0.7437,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=100",MLP Grid Search
+Spark,Grid Search,MLP,surprise,119.32,0.8969,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=200",MLP Grid Search
+Spark,Grid Search,MLP,disgust,105.91,0.7625,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=100",MLP Grid Search
+Spark,Grid Search (Fast),MLP,joy,101.23,0.7803,"EMR, m5.xlarge x 3","layers=[9, 128, 64, 32, 2], maxIter=150",MLP Grid Search (Fast)
+Spark,Grid Search (Fast),MLP,sadness,66.3,0.8069,"EMR, m5.xlarge x 3","layers=[9, 100, 2], maxIter=150",MLP Grid Search (Fast)
+Spark,Grid Search (Fast),MLP,anger,75.61,0.8055,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=150",MLP Grid Search (Fast)
+Spark,Grid Search (Fast),MLP,fear,74.95,0.8141,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=150",MLP Grid Search (Fast)
+Spark,Grid Search (Fast),MLP,surprise,75.54,0.8224,"EMR, m5.xlarge x 3","layers=[9, 100, 50, 2], maxIter=150",MLP Grid Search (Fast)
+Spark,Grid Search (Fast),MLP,disgust,86.94,0.8548,"EMR, m5.xlarge x 3","layers=[9, 128, 64, 32, 2], maxIter=150",MLP Grid Search (Fast)
+Spark,Random Search (Fast),MLP,joy,76.69,0.81,"EMR, m5.xlarge x 3","layers=[9, 32, 16, 2], stepSize=0.01, blockSize=64",MLP Random Search (Fast)
+Spark,Random Search (Fast),MLP,sadness,65.66,0.7785,"EMR, m5.xlarge x 3","layers=[9, 64, 2], stepSize=0.01, blockSize=64",MLP Random Search (Fast)
+Spark,Random Search (Fast),MLP,anger,116.38,0.7708,"EMR, m5.xlarge x 3","layers=[9, 50, 50, 2], stepSize=0.01, blockSize=128",MLP Random Search (Fast)
+Spark,Random Search (Fast),MLP,fear,85.36,0.7957,"EMR, m5.xlarge x 3","layers=[9, 50, 50, 2], stepSize=0.05, blockSize=64",MLP Random Search (Fast)
+Spark,Random Search (Fast),MLP,surprise,108.92,0.7723,"EMR, m5.xlarge x 3","layers=[9, 128, 64, 2], stepSize=0.05, blockSize=64",MLP Random Search (Fast)
+Spark,Random Search (Fast),MLP,disgust,98.55,0.8169,"EMR, m5.xlarge x 3","layers=[9, 128, 64, 2], stepSize=0.01, blockSize=128",MLP Random Search (Fast)

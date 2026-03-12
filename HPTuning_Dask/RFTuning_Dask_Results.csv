@@ -1,0 +1,13 @@
+Platform,Method,Model,Label,Runtime (s),Best Score,Resources Used,Notes
+Dask,Grid Search,Random Forest,joy,5.25,0.5231,Dask cluster (default),"{'clf__max_depth': 20, 'clf__min_samples_leaf': 2, 'clf__n_estimators': 100}"
+Dask,Grid Search,Random Forest,sadness,2.47,0.5967,Dask cluster (default),"{'clf__max_depth': 5, 'clf__min_samples_leaf': 2, 'clf__n_estimators': 100}"
+Dask,Grid Search,Random Forest,anger,2.57,0.629,Dask cluster (default),"{'clf__max_depth': 5, 'clf__min_samples_leaf': 2, 'clf__n_estimators': 100}"
+Dask,Grid Search,Random Forest,fear,2.38,0.5556,Dask cluster (default),"{'clf__max_depth': 5, 'clf__min_samples_leaf': 1, 'clf__n_estimators': 100}"
+Dask,Grid Search,Random Forest,surprise,2.55,0.5207,Dask cluster (default),"{'clf__max_depth': 5, 'clf__min_samples_leaf': 2, 'clf__n_estimators': 200}"
+Dask,Grid Search,Random Forest,disgust,3.69,0.6419,Dask cluster (default),"{'clf__max_depth': 5, 'clf__min_samples_leaf': 2, 'clf__n_estimators': 200}"
+Dask,Random Search,Random Forest,joy,2.05,0.5231,Dask cluster (default),"{'clf__n_estimators': 100, 'clf__min_samples_leaf': 2, 'clf__max_depth': 20}"
+Dask,Random Search,Random Forest,sadness,1.39,0.598,Dask cluster (default),"{'clf__n_estimators': 100, 'clf__min_samples_leaf': 1, 'clf__max_depth': 5}"
+Dask,Random Search,Random Forest,anger,1.49,0.6263,Dask cluster (default),"{'clf__n_estimators': 100, 'clf__min_samples_leaf': 1, 'clf__max_depth': 5}"
+Dask,Random Search,Random Forest,fear,1.32,0.5556,Dask cluster (default),"{'clf__n_estimators': 100, 'clf__min_samples_leaf': 1, 'clf__max_depth': 5}"
+Dask,Random Search,Random Forest,surprise,1.4,0.5111,Dask cluster (default),"{'clf__n_estimators': 100, 'clf__min_samples_leaf': 1, 'clf__max_depth': 5}"
+Dask,Random Search,Random Forest,disgust,1.22,0.6362,Dask cluster (default),"{'clf__n_estimators': 100, 'clf__min_samples_leaf': 1, 'clf__max_depth': 5}"
