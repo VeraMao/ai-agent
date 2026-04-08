@@ -1,9 +1,6 @@
 # Encoding Emotion in Music: A Multimodal AI Benchmark Across Audio, Lyrics, and Language Models  
 *A computational social science exploration of how machines infer musical emotion from sound, text, and human-generated tags.*
 
-**Final Project – MACS 37005 AI Agents for Social Science & Society**  
-**Vera Mao, Mia Sowder and Amrita Pathak**
-
 ---
 
 ## Description
